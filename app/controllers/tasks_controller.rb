@@ -1,16 +1,14 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  #before_action :correct_user, only: [:destroy,:update,:show] #こっちは/task/numberで別のユーザのタスクリストにアクセスできた
+  
   before_action :correct_user, only: [:destroy,:show,:edit,:update]
   def index
-    #if logged_in?
-      #@task = current_user.tasks.build
+    
       @tasks = current_user.tasks.order(id: :desc).page(params[:page])
-    #end
+   
   end
 
   def show
-    #@task=Task.find(params[:id])
     @task = current_user.tasks.find_by(id: params[:id])
   end
 
@@ -32,12 +30,12 @@ class TasksController < ApplicationController
   end
 
   def edit
-    #@task=Task.find(params[:id])
+   
     @task = current_user.tasks.find_by(id: params[:id])
   end
 
   def update
-      #@task = current_user.tasks.build(task_params)
+      
       @task = current_user.tasks.find_by(id: params[:id])
       if @task.update(task_params)
           flash[:success]='Taskは正常に更新されました'
